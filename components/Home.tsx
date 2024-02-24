@@ -1,7 +1,7 @@
 "use client";
 import FeedCards from "@/components/UI/FeedCards";
 import Image from "next/image";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { BiHomeCircle, BiImageAlt } from "react-icons/bi";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
@@ -11,7 +11,7 @@ import { verifyTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import { useQueryClient } from "@tanstack/react-query";
 import { CiImageOn } from "react-icons/ci";
-import { useGetAllTweet } from "@/hooks/tweet";
+import { useCreateTweet, useGetAllTweet } from "@/hooks/tweet";
 import { Tweet } from "@/gql/graphql";
 
 interface sidebarButton {
@@ -30,7 +30,9 @@ export default function Home() {
   const { user } = useCurrentUser();
   const {tweets=[]}=useGetAllTweet()
   const queryClient = useQueryClient();
-  console.log(user);
+  const {mutate}=useCreateTweet()
+  const [content,setContent]=useState("")
+
   const handleLogin = useCallback(
     async (cred: CredentialResponse) => {
       const googleToken = cred.credential;
@@ -52,7 +54,13 @@ export default function Home() {
     input.setAttribute("type", "file")
     input.setAttribute("accept", "image/*")
     input.click()
-  },[])
+  }, [])
+  
+  const handlePostTweet = useCallback(() => {
+    mutate({
+      content
+    })
+  },[content,mutate])
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen px-48 relative sm:px-56">
@@ -104,13 +112,15 @@ export default function Home() {
             </div>
             <div className="col-span-11">
               <textarea
+                value={content}
+                onChange={(e)=>setContent(e.target.value)}
                 className="w-full bg-transparent text-xl px-3 border-b border-slate-700"
                 placeholder="What's happening?"
                 rows={3}
               ></textarea>
               <div className="mt-2 flex justify-between items-center">
                 <CiImageOn onClick={handleImage} className=" text-white text-2xl" />
-                <button className="bg-[#1d9bf0] font-semibold text-sm py-2 px-4 rounded-full">
+                <button onClick={handlePostTweet} className="bg-[#1d9bf0] font-semibold text-sm py-2 px-4 rounded-full">
                   Post
                 </button>
               </div>
