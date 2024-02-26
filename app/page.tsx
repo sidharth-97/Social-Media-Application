@@ -1,17 +1,16 @@
 "use client";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Home from "@/components/Home";
+import Home from "@/components/HomeLayout";
+import Feeds from "@/components/Feeds";
 
-const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <div>
-      <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools/>
-        <Home />
-      </QueryClientProvider>
+        <Home>
+          <Feeds/>
+        </Home>
     </div>
   );
 }

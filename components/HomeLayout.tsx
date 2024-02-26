@@ -13,6 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CiImageOn } from "react-icons/ci";
 import { useCreateTweet, useGetAllTweet } from "@/hooks/tweet";
 import { Tweet } from "@/gql/graphql";
+import Feeds from "./Feeds";
 
 interface sidebarButton {
   title: string;
@@ -26,12 +27,15 @@ const sidebarMenuItems: sidebarButton[] = [
   },
 ];
 
-export default function Home() {
+interface LayoutProps{
+  children: React.ReactNode
+}
+
+const Home:React.FC<LayoutProps>=(props)=> {
   const { user } = useCurrentUser();
-  const {tweets=[]}=useGetAllTweet()
+
   const queryClient = useQueryClient();
-  const {mutate}=useCreateTweet()
-  const [content,setContent]=useState("")
+ 
 
   const handleLogin = useCallback(
     async (cred: CredentialResponse) => {
@@ -49,36 +53,25 @@ export default function Home() {
     },
     [queryClient]
   );
-  const handleImage = useCallback(() => {
-    const input = document.createElement("input")
-    input.setAttribute("type", "file")
-    input.setAttribute("accept", "image/*")
-    input.click()
-  }, [])
-  
-  const handlePostTweet = useCallback(() => {
-    mutate({
-      content
-    })
-  },[content,mutate])
+ 
   return (
     <div>
-      <div className="grid grid-cols-12 h-screen w-screen px-48 relative sm:px-56">
-        <div className=" col-span-3 p-3">
+      <div className="grid grid-cols-12 h-screen w-screen sm:px-48 relative">
+        <div className=" col-span-3 p-3 flex flex-col gap-3 sm:gap-0">
           <FaSquareXTwitter className=" text-4xl" />
-          <ul className="flex gap-2 py-4 text-xl">
+          <ul className="flex gap-2 sm:py-4 text-lg font-semibold sm:text-xl">
             {sidebarMenuItems.map((item, index) => (
               <li
                 key={index}
-                className=" flex gap-4 justify-center items-center hover:bg-gray-800 rounded-full p-4"
+                className=" flex gap-1 sm:gap-4 justify-center font-semibold items-center hover:bg-gray-800 rounded-full sm:p-4"
               >
                 {item.icon}
                 {item.title}
               </li>
             ))}
           </ul>
-          <button className="bg-[#1d9bf0] p-3 rounded-full w-1/2">Post</button>
-          <div className=" absolute bottom-5 flex gap-2 bg-slate-800 px-3 py-3 rounded-full">
+          <button className="bg-[#1d9bf0] p-1 sm:p-3 font-semibold rounded-full sm:w-1/2">Post</button>
+          <div className="absolute bottom-5 flex gap-2 bg-slate-800 sm:px-3 sm:py-3 rounded-full">
             {user && user.profileImage && (
               <div className="flex justify-center items-center gap-3">
                 <Image
@@ -89,7 +82,7 @@ export default function Home() {
                   height={50}
                   width={50}
                 />
-                <div className="flex gap-1">
+                <div className="hidden sm:flex gap-1">
                 <h5>{user?.firstName}</h5>
                 <h5>{user?.lastName}</h5>
                 </div>
@@ -98,37 +91,7 @@ export default function Home() {
           </div>
         </div>
         <div className=" col-span-6 border-r-2 border-l-2 border-slate-500 p-5">
-          <div className="grid grid-cols-12 gap-3 transition-all cursor-pointer mb-5">
-            <div className="col-span-1">
-              {user?.profileImage && (
-                <Image
-                  className="rounded-full"
-                  src={user?.profileImage}
-                  alt="user-image"
-                  height={50}
-                  width={50}
-                />
-              )}
-            </div>
-            <div className="col-span-11">
-              <textarea
-                value={content}
-                onChange={(e)=>setContent(e.target.value)}
-                className="w-full bg-transparent text-xl px-3 border-b border-slate-700"
-                placeholder="What's happening?"
-                rows={3}
-              ></textarea>
-              <div className="mt-2 flex justify-between items-center">
-                <CiImageOn onClick={handleImage} className=" text-white text-2xl" />
-                <button onClick={handlePostTweet} className="bg-[#1d9bf0] font-semibold text-sm py-2 px-4 rounded-full">
-                  Post
-                </button>
-              </div>
-            </div>
-          </div>
-          {
-            tweets?.map((tweet) => tweet?<FeedCards key={tweet?.id} data={tweet as Tweet} />:null)
-          }
+          {props.children}
         </div>
         <div className=" col-span-3">
           {!user && (
@@ -142,3 +105,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+export default Home

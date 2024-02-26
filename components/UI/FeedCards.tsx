@@ -13,10 +13,10 @@ interface FeedCardsProps{
 const FeedCards:React.FC<FeedCardsProps> = ({data}) => {
   return (
       <div className='grid grid-cols-12 transition-all cursor-pointer mb-3'>
-          <div className=' col-span-1 p-2'>
+          <div className=' col-span-1 sm:p-2'>
             {data.author?.profileImage&&<Image className='rounded-full' src={data.author?.profileImage} alt='profile' height={50} width={50} />}
           </div>
-          <div className=' col-span-11 p-2'>
+          <div className=' col-span-11 px-2 sm:p-2'>
               <h5>{data.author?.firstName} {data.author?.lastName}</h5>
               <p>{data.content}</p>
               <div className='flex justify-around items-center pt-4'>
