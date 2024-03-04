@@ -10,22 +10,15 @@ import { graphqlClient } from "@/clients/api";
 import { verifyTokenQuery } from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import { useQueryClient } from "@tanstack/react-query";
-import { CiImageOn } from "react-icons/ci";
-import { useCreateTweet, useGetAllTweet } from "@/hooks/tweet";
-import { Tweet } from "@/gql/graphql";
-import Feeds from "./Feeds";
+import { HiOutlineUser } from "react-icons/hi";
+import Link from "next/link";
 
 interface sidebarButton {
   title: string;
   icon: React.ReactNode;
+  link: string;
 }
 
-const sidebarMenuItems: sidebarButton[] = [
-  {
-    title: "Home",
-    icon: <BiHomeCircle />,
-  },
-];
 
 interface LayoutProps{
   children: React.ReactNode
@@ -53,20 +46,35 @@ const Home:React.FC<LayoutProps>=(props)=> {
     },
     [queryClient]
   );
+
+  const sidebarMenuItems: sidebarButton[] = [
+    {
+      title: "Home",
+      icon: <BiHomeCircle className=" text-2xl" />,
+      link:"/"
+    },
+    {
+      title: "Profile",
+      icon: <HiOutlineUser className=" text-2xl"/>,
+      link:`/${user?.id}`
+    }
+  ];
  
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen sm:px-48 relative">
-        <div className=" col-span-3 p-3 flex flex-col gap-3 sm:gap-0">
-          <FaSquareXTwitter className=" text-4xl" />
-          <ul className="flex gap-2 sm:py-4 text-lg font-semibold sm:text-xl">
+        <div className=" col-span-3 py-3 flex flex-col gap-3 sm:gap-0">
+          <FaSquareXTwitter className=" ms-3 text-4xl" />
+          <ul className="flex flex-col items-start sm:py-4 text-lg font-semibold sm:text-xl">
             {sidebarMenuItems.map((item, index) => (
               <li
                 key={index}
                 className=" flex gap-1 sm:gap-4 justify-center font-semibold items-center hover:bg-gray-800 rounded-full sm:p-4"
               >
+                <Link className="flex gap-1 justify-center items-center" href={item.link}>
                 {item.icon}
                 {item.title}
+                </Link>
               </li>
             ))}
           </ul>

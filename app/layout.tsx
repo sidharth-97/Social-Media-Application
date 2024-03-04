@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <GoogleOAuthProvider clientId={`${process.env.GOOGLE_PASS}`}>
+    <GoogleOAuthProvider clientId={`${process.env.NEXT_PUBLIC_GOOGLE_PASS}`}>
       <html lang="en">
         <body className={inter.className}>
         <QueryClientProvider client={queryClient}>

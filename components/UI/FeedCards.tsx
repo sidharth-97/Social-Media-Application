@@ -1,5 +1,6 @@
 import { Tweet } from '@/gql/graphql'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { AiOutlineRetweet } from 'react-icons/ai'
 import { CiHeart } from 'react-icons/ci'
@@ -17,7 +18,7 @@ const FeedCards:React.FC<FeedCardsProps> = ({data}) => {
             {data.author?.profileImage&&<Image className='rounded-full' src={data.author?.profileImage} alt='profile' height={50} width={50} />}
           </div>
           <div className=' col-span-11 px-2 sm:p-2'>
-              <h5>{data.author?.firstName} {data.author?.lastName}</h5>
+              <Link href={`/${data.author?.id}`}>{data.author?.firstName} {data.author?.lastName}</Link>
               <p>{data.content}</p>
               <div className='flex justify-around items-center pt-4'>
                   <FaRegComment />
