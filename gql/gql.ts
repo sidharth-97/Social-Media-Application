@@ -15,6 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n    #graphql\n    mutation CreateTweet($payload: CreateTweetData!) {\n  createTweet(payload: $payload) {\n      id\n  }\n}\n": types.CreateTweetDocument,
     "#graphql\n  query GetAllTweets {\n    getAllTweets {\n      id\n      content\n      imageURL\n      author {\n        firstName\n        lastName\n        profileImage\n      }\n    }\n  }\n": types.GetAllTweetsDocument,
+    "#graphql \nquery GetsignedUrl($imageName: String!, $imageType: String!) {\n  getSignedUrl(imageName: $imageName, imageType: $imageType)\n}\n": types.GetsignedUrlDocument,
     "#graphql\n    query verifyTokenQuery($token:String!){\n        verifyGoogleToken(token: $token)\n    }\n": types.VerifyTokenQueryDocument,
     "#graphql\nquery GetCurrentUser {\n  getCurrentUser {\n    id,\n    profileImage,\n    firstName,\n    email,\n    lastName,\n    tweets{\n      id,\n      content,\n      author{\n        id\n        firstName,\n        lastName,\n        profileImage\n      }\n    }\n  }\n}\n": types.GetCurrentUserDocument,
     "#graphql\nquery GetUserById($id: ID!) {\n  getUserById(id: $id) {\n    id\n    firstName\n    lastName\n    email\n    profileImage\n    tweets {\n      id\n      content\n      author {\n        firstName\n        id\n        profileImage\n      }\n    }\n  }\n}\n": types.GetUserByIdDocument,
@@ -42,6 +43,10 @@ export function graphql(source: "\n    #graphql\n    mutation CreateTweet($paylo
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "#graphql\n  query GetAllTweets {\n    getAllTweets {\n      id\n      content\n      imageURL\n      author {\n        firstName\n        lastName\n        profileImage\n      }\n    }\n  }\n"): (typeof documents)["#graphql\n  query GetAllTweets {\n    getAllTweets {\n      id\n      content\n      imageURL\n      author {\n        firstName\n        lastName\n        profileImage\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "#graphql \nquery GetsignedUrl($imageName: String!, $imageType: String!) {\n  getSignedUrl(imageName: $imageName, imageType: $imageType)\n}\n"): (typeof documents)["#graphql \nquery GetsignedUrl($imageName: String!, $imageType: String!) {\n  getSignedUrl(imageName: $imageName, imageType: $imageType)\n}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

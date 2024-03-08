@@ -19,7 +19,10 @@ const FeedCards:React.FC<FeedCardsProps> = ({data}) => {
           </div>
           <div className=' col-span-11 px-2 sm:p-2'>
               <Link href={`/${data.author?.id}`}>{data.author?.firstName} {data.author?.lastName}</Link>
-              <p>{data.content}</p>
+        <p>{data.content}</p>
+        {
+        data.imageURL&& <Image src={data.imageURL} alt='image' width={400} height={400}/>
+        }
               <div className='flex justify-around items-center pt-4'>
                   <FaRegComment />
                   <AiOutlineRetweet />
