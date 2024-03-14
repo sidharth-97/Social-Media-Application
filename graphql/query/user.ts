@@ -14,6 +14,18 @@ query GetCurrentUser {
     firstName,
     email,
     lastName,
+    followers{
+      id
+      firstName
+      lastName
+      profileImage
+    }
+    following{
+      id
+      firstName
+      lastName
+      profileImage
+    }
     tweets{
       id,
       content,
@@ -36,6 +48,18 @@ query GetUserById($id: ID!) {
     lastName
     email
     profileImage
+    followers{
+      id
+      firstName
+      lastName
+      profileImage
+    }
+    following{
+      id
+      firstName
+      lastName
+      profileImage
+    }
     tweets {
       id
       content
