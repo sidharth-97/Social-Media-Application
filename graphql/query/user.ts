@@ -14,6 +14,12 @@ query GetCurrentUser {
     firstName,
     email,
     lastName,
+    recommendedUsers{
+      id
+      firstName
+      lastName
+      profileImage
+    },
     followers{
       id
       firstName

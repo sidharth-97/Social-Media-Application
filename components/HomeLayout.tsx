@@ -19,16 +19,14 @@ interface sidebarButton {
   link: string;
 }
 
-
-interface LayoutProps{
-  children: React.ReactNode
+interface LayoutProps {
+  children: React.ReactNode;
 }
 
-const Home:React.FC<LayoutProps>=(props)=> {
+const Home: React.FC<LayoutProps> = (props) => {
   const { user } = useCurrentUser();
 
   const queryClient = useQueryClient();
- 
 
   const handleLogin = useCallback(
     async (cred: CredentialResponse) => {
@@ -51,15 +49,15 @@ const Home:React.FC<LayoutProps>=(props)=> {
     {
       title: "Home",
       icon: <BiHomeCircle className=" text-2xl" />,
-      link:"/"
+      link: "/",
     },
     {
       title: "Profile",
-      icon: <HiOutlineUser className=" text-2xl"/>,
-      link:`/${user?.id}`
-    }
+      icon: <HiOutlineUser className=" text-2xl" />,
+      link: `/${user?.id}`,
+    },
   ];
- 
+
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen sm:px-48 relative">
@@ -71,15 +69,20 @@ const Home:React.FC<LayoutProps>=(props)=> {
                 key={index}
                 className=" flex gap-1 sm:gap-4 justify-center font-semibold items-center hover:bg-gray-800 rounded-full sm:p-4"
               >
-                <Link className="flex gap-1 justify-center items-center" href={item.link}>
-                {item.icon}
-                {item.title}
+                <Link
+                  className="flex gap-1 justify-center items-center"
+                  href={item.link}
+                >
+                  {item.icon}
+                  {item.title}
                 </Link>
               </li>
             ))}
           </ul>
-          <button className="bg-[#1d9bf0] p-1 sm:p-3 font-semibold rounded-full sm:w-1/2">Post</button>
-          <div className="absolute bottom-5 flex gap-2 bg-slate-800 sm:px-3 sm:py-3 rounded-full">
+          <button className="bg-[#1d9bf0] p-1 sm:p-3 font-semibold rounded-full sm:w-1/2">
+            Post
+          </button>
+          <div className="absolute bottom-5 flex gap-2 bg-[#16181C] sm:px-3 sm:py-3 rounded-full">
             {user && user.profileImage && (
               <div className="flex justify-center items-center gap-3">
                 <Image
@@ -91,8 +94,8 @@ const Home:React.FC<LayoutProps>=(props)=> {
                   width={50}
                 />
                 <div className="hidden sm:flex gap-1">
-                <h5>{user?.firstName}</h5>
-                <h5>{user?.lastName}</h5>
+                  <h5>{user?.firstName}</h5>
+                  <h5>{user?.lastName}</h5>
                 </div>
               </div>
             )}
@@ -102,17 +105,34 @@ const Home:React.FC<LayoutProps>=(props)=> {
           {props.children}
         </div>
         <div className=" col-span-3">
-          {!user && (
+          {!user ? (
             <div>
               <h1>New to X?</h1>
               <GoogleLogin onSuccess={handleLogin} />
             </div>
+          ) : (
+              <div className=" bg-[#16181C] p-5 mt-2 rounded-lg ms-3">
+                <h1 className="text-xl mb-3">Who to follow</h1>
+              {user?.recommendedUsers?.map((el) => (
+                <div key={el?.id} className="flex items-center gap-3">
+                 <div className="flex items-center gap-1"> {el?.profileImage && (
+                    <Image
+                      src={el.profileImage}
+                      alt="img"
+                      width={50}
+                      height={50}
+                    />
+                  )}
+                 </div>
+                  <div>  <p> {el?.firstName}{" "+ el?.lastName}</p><Link href={`/${el?.id}`} className="bg-white text-black px-3 py-1 rounded-full">View</Link></div>
+                </div>
+              ))}
+            </div>
           )}
-        </div> 
+        </div>
       </div>
     </div>
   );
-}
+};
 
-
-export default Home
+export default Home;
